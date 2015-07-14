@@ -1,28 +1,26 @@
 package com.example.admin.mp3tagger;
 
-import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ListActivity;
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
+import android.content.DialogInterface;
+import android.os.Environment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
-
+import android.widget.TextView;
 import java.io.File;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 
 public class MainActivity extends ListActivity {
 
-    private String path;
+    private List<String> item = null;
+    private List<String> path = null;
+    private String root="/";
+    private TextView myPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,77 +28,9 @@ public class MainActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Button dirChooserButton = (Button) findViewById(R.id.ChooseDirButton);
-//        dirChooserButton.setOnClickListener(new View.OnClickListener()
-//        {
-//            private String m_chosenDir = "";
-//            private boolean m_newFolderEnabled = true;
-//
-//            @Override
-//            public void onClick(View v)
-//            {
-//                // Create DirectoryChooserDialog and register a callback
-//                DirectoryChooserDialog directoryChooserDialog =
-//                        new DirectoryChooserDialog(MainActivity.this,
-//                                new DirectoryChooserDialog.ChosenDirectoryListener()
-//                                {
-//                                    @Override
-//                                    public void onChosenDir(String chosenDir)
-//                                    {
-//                                        m_chosenDir = chosenDir;
-//                                        Toast.makeText(
-//                                                MainActivity.this, "Chosen directory: " +
-//                                                        chosenDir, Toast.LENGTH_LONG).show();
-//                                    }
-//                                });
-//                // Toggle new folder button enabling
-//                directoryChooserDialog.setNewFolderEnabled(m_newFolderEnabled);
-//                // Load directory chooser dialog for initial 'm_chosenDir' directory.
-//                // The registered callback will be called upon final directory selection.
-//                directoryChooserDialog.chooseDirectory(m_chosenDir);
-//                m_newFolderEnabled = ! m_newFolderEnabled;
-//            }
-//        });
-//    }
+        myPath = (TextView)findViewById(R.id.path);
 
-        // Use the current directory as title
-        path = "/storage";
-
-        if (getIntent().hasExtra("path"))
-        {
-            path = getIntent().getStringExtra("path");
-        }
-
-        setTitle(path);
-
-        // Read all files sorted into the values-array
-        List values = FindFiles(true);
-        File dir = new File(path);
-
-//        if (!dir.canRead())
-//        {
-//            setTitle(getTitle() + " (inaccessible)");
-//        }
-//
-//        String[] list = FindFiles(true);//dir.list();
-//
-//        if (list != null)
-//        {
-//            for (String file : list)
-//            {
-//                if (!file.startsWith("."))
-//                {
-//                    values.add(file);
-//                }
-//            }
-//        }
-
-        Collections.sort(values);
-
-        // Put the data into the list
-        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, values);
-        setListAdapter(adapter);
-
+        getDir(root);
     }
 
     @Override
@@ -125,59 +55,150 @@ public class MainActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
 
-        String filename = (String)getListAdapter().getItem(position);
+    private void getDir(String dirPath)
+    {
 
-        if (path.endsWith(File.separator))
+        myPath.setText("Location: " + dirPath);
+
+
+
+        item = new ArrayList<String>();
+
+        path = new ArrayList<String>();
+
+
+
+        File f = new File(dirPath);
+
+        File[] files = f.listFiles();
+
+
+
+        if(!dirPath.equals(root))
+
         {
-            filename = path + filename;
-        }
-        else
-        {
-            filename = path + File.separator + filename;
+
+
+
+            item.add(root);
+
+            path.add(root);
+
+
+
+            item.add("../");
+
+            path.add(f.getParent());
+
+
+
         }
 
-        if (new File(filename).isDirectory())
+
+
+        for(int i=0; i < files.length; i++)
+
         {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.putExtra("path", filename);
-            startActivity(intent);
+
+            File file = files[i];
+
+            path.add(file.getPath());
+
+            if(file.isDirectory())
+
+                item.add(file.getName() + "/");
+
+            else
+
+                item.add(file.getName());
+
         }
-        else
-        {
-            Toast.makeText(this, filename + " is not a directory", Toast.LENGTH_LONG).show();
-        }
+
+
+
+        ArrayAdapter<String> fileList =
+
+                new ArrayAdapter<String>(this, R.layout.row, item);
+
+        setListAdapter(fileList);
+
     }
 
-    private List<String> FindFiles(Boolean fullPath) {
-        final List<String> tFileList = new ArrayList<String>();
 
-        String[] fileTypes = new String[]{".mp3"}; // file extensions you're looking for
-        FilenameFilter[] filter = new FilenameFilter[fileTypes .length];
+    @Override
 
-        int i = 0;
-        for (final String type : fileTypes ) {
-            filter[i] = new FilenameFilter() {
-                public boolean accept(File dir, String name) {
-                    return name.endsWith("." + type);
-                }
-            };
-            i++;
+    protected void onListItemClick(ListView l, View v, int position, long id) {
+
+
+
+        File file = new File(path.get(position));
+
+
+
+        if (file.isDirectory())
+
+        {
+
+            if(file.canRead())
+
+                getDir(path.get(position));
+
+            else
+
+            {
+
+                new AlertDialog.Builder(this)
+
+                        .setIcon(R.drawable.abc_ic_menu_cut_mtrl_alpha)
+
+                        .setTitle("[" + file.getName() + "] folder can't be read!")
+
+                        .setPositiveButton("OK",
+
+                                new DialogInterface.OnClickListener() {
+
+
+                                    @Override
+
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                        // TODO Auto-generated method stub
+
+                                    }
+
+                                }).show();
+
+            }
+
         }
 
-        FileUtils fileUtils = new FileUtils();
-        File[] allMatchingFiles = fileUtils.listFilesAsArray(
-                new File("/sdcard"), filter, -1);
-        for (File f : allMatchingFiles) {
-            if (fullPath) {
-                tFileList.add(f.getAbsolutePath());
-            }
-            else {
-                tFileList.add(f.getName());
-            }
+        else
+
+        {
+
+            new AlertDialog.Builder(this)
+
+                    .setIcon(R.drawable.abc_ic_menu_cut_mtrl_alpha)
+
+                    .setTitle("[" + file.getName() + "]")
+
+                    .setPositiveButton("OK",
+
+                            new DialogInterface.OnClickListener() {
+
+
+                                @Override
+
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    // TODO Auto-generated method stub
+
+                                }
+
+                            }).show();
+
         }
-        return tFileList;
+
     }
 }
