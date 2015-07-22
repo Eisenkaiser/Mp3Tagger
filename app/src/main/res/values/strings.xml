@@ -2,4 +2,8 @@
     <string name="app_name">Mp3Tagger</string>
     <string name="action_settings">Settings</string>
     <string name="no_data">No Data</string>
+    <string name="durchsuchen">Durchsuchen</string>
+    <string name="editieren">Editieren</string>
+    <string name="konvert">Konvert</string>
+    <string name="frage">Bitte wählen Sie ein Verzeichnis aus!</string>
 </resources>

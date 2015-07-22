@@ -3,7 +3,6 @@ package com.example.admin.mp3tagger;
 import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.DialogInterface;
-import android.os.Environment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -78,7 +77,7 @@ public class MainActivity extends ListActivity {
                 item.add(file.getName());
         }
 
-        ArrayAdapter<String> fileList = new ArrayAdapter<String>(this, R.layout.row, item);
+        ArrayAdapter<String> fileList = new ArrayAdapter<String>(this, R.layout.list_row_folder, item);
         setListAdapter(fileList);
     }
 
