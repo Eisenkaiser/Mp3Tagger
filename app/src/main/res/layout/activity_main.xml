@@ -5,43 +5,47 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/path"
+        android:id="@+id/main_path_lable"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/accent_material_light"/>
+        android:textColor="@color/accent_material_light"
+        android:text="@string/path"
+        android:layout_margin="5dp" />
 
     <ListView
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="1dp"
-        android:layout_above="@+id/btn_editieren"
+        android:layout_above="@+id/main_edit"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/path" />
-
-    <TextView
-        android:id="@android:id/empty"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/no_data"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/main_path_lable"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="5dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/editieren"
-        android:id="@+id/btn_editieren"
+        android:text="@string/edit"
+        android:id="@+id/main_edit"
+        android:background="@drawable/custom_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_toEndOf="@+id/btn_konvert" />
+        android:layout_marginRight="5dp"
+        android:layout_alignParentStart="false"
+        android:layout_toEndOf="@+id/main_select"
+        android:layout_margin="5dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/konvert"
-        android:id="@+id/btn_konvert"
+        android:text="@string/select_all"
+        android:id="@+id/main_select"
+        android:background="@drawable/custom_button"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="5dp"
+        android:layout_margin="5dp" />
 
 </RelativeLayout>

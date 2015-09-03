@@ -1,9 +1,29 @@
 <resources>
-    <string name="app_name">Mp3Tagger</string>
+    <string name="app_name" translatable="false">MP3-Tagger</string>
     <string name="action_settings">Settings</string>
     <string name="no_data">No Data</string>
-    <string name="durchsuchen">Durchsuchen</string>
-    <string name="editieren">Editieren</string>
-    <string name="konvert">Konvert</string>
-    <string name="frage">Bitte wählen Sie ein Verzeichnis aus!</string>
+    <string name="edit">Edit</string>
+    <string name="convert">Convert filename to tag</string>
+    <string name="select_all">Select All</string>
+    <string name="deselect_all">Deselect All</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save changes</string>
+    <string name="browse">Browse</string>
+    <string name="artist">Artist</string>
+    <string name="album">Album</string>
+    <string name="title">Title</string>
+    <string name="genre">Genre</string>
+    <string name="composer">Composer</string>
+    <string name="year">Year</string>
+    <string name="track">Track</string>
+    <string name="comment">Comment</string>
+    <string name="cover">Cover</string>
+    <string name="rating">Rating</string>
+    <string name="title_activity_edit">Edit</string>
+    <string name="title_activity_convert">Convert</string>
+    <string name="path">Path: </string>
+    <string name="maintain">maintain</string>
+    <string name="cover_text">To get the album covers, we recommend to use Album Art Grabber!</string>
+    <string name="click_here">Click here: https://play.google.com/store/apps/details?id=com.citc.aag</string>
+    <string name="access_denied_message">Access denied!</string>
 </resources>

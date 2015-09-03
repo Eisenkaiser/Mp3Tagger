@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="album">Album</string>
+    <string name="artist">Interpret</string>
+    <string name="browse">Durchsuchen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="comment">Kommentar</string>
+    <string name="composer">Komponist</string>
+    <string name="cover">Cover</string>
+    <string name="deselect_all">Auswahl aufheben</string>
+    <string name="edit">Bearbeiten</string>
+    <string name="genre">Genre</string>
+    <string name="convert">Konvertieren</string>
+    <string name="no_data">Keine Daten</string>
+    <string name="save">Änderungen speichern</string>
+    <string name="select_all">Alles auswählen</string>
+    <string name="title">Titel</string>
+    <string name="track">Track</string>
+    <string name="year">Jahr</string>
+    <string name="rating">Bewertung</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_edit">Editieren</string>
+    <string name="title_activity_convert">Konvertieren</string>
+    <string name="cover_text">Um Albumcover zu erhalten, empfehlen wir Ihnen Album Art Grabber zu verwenden!</string>
+    <string name="click_here">Hier klicken: https://play.google.com/store/apps/details?id=com.citc.aag</string>
+    <string name="path">Pfad: </string>
+    <string name="access_denied_message">Zugriff verweigert!</string>
+    <string name="maintain">beibehalten</string>
+</resources>

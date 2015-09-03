@@ -2,32 +2,32 @@
 <items version="2" >
 
     <item
-        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-bf5b6e246573800170cfc74d04b376910c63a8e5.jar" />
+        sha1="4e86306289ace4aa0cfec44a05ed2b410d36989d">
+        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\classes-e01e33f2a8f6d701ac144ffa39897cfc80ba60da.jar" />
     </item>
     <item
-        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jar="D:\Users\deutschth\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.0.0\support-annotations-22.0.0.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\classes-6a3fd3c88fdf43d03c48ff65611aa503fd81d40a.jar" />
+        sha1="685d0b2c590447e85284ed84712cb363ba04eff8">
+        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\support-annotations-22.0.0-c26165d16b67b3a39ba18ac00c39268d153afbfa.jar" />
     </item>
     <item
-        jar="D:\Users\deutschth\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.0.0\jars\classes.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-059c5ffb87661e07548c4f69a11b3964d600890e.jar" />
+        sha1="d84409890828e07d344a3b9b1da545dba9897b51">
+        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\classes-288fcef8c49e2f565b9a0ee4408c28c152e3a769.jar" />
     </item>
     <item
-        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jar="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.0.0\jars\libs\internal_impl-22.0.0.jar"
         jumboMode="false"
         revision="22.0.1"
-        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
-        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\classes-dbb7a2ff174f08534e4762b3695cfa422836c9db.jar" />
+        sha1="b5b92f469d515a13d778900f6d50c03d12f35504">
+        <dex dex="D:\Users\deutschth\Documents\GitHub\Mp3Tagger\app\build\intermediates\pre-dexed\debug\internal_impl-22.0.0-e96273f1befbc78becf2d9298142b10b4f09e8b3.jar" />
     </item>
 
 </items>
