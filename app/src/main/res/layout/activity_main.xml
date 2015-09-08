@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:listSelector="@android:color/transparent">
 
     <TextView
-        android:id="@+id/main_path_lable"
+        android:id="@+id/main_path_label"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/accent_material_light"
@@ -19,7 +20,7 @@
         android:dividerHeight="1dp"
         android:layout_above="@+id/main_edit"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/main_path_lable"
+        android:layout_below="@+id/main_path_label"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_margin="5dp" />

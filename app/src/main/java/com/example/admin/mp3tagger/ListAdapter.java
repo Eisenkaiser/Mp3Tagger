@@ -10,7 +10,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,10 +56,12 @@ public class ListAdapter extends ArrayAdapter<ListItem> implements CompoundButto
             view = inflater.inflate(R.layout.row_mp3, parent, false);
 
             viewHolder = new ViewHolder();
+
             viewHolder.artist = (TextView) view.findViewById(R.id.row_artist);
             viewHolder.title = (TextView) view.findViewById(R.id.row_title);
             viewHolder.filename = (TextView) view.findViewById(R.id.row_mp3_filename);
             viewHolder.checkBox = (CheckBox) view.findViewById(R.id.row_checkbox);
+
             view.setTag(viewHolder);
         } else {
             view = inflater.inflate(R.layout.row_folder, parent, false);
@@ -71,16 +72,8 @@ public class ListAdapter extends ArrayAdapter<ListItem> implements CompoundButto
         }
 
         if (items.get(position).getName().endsWith(".mp3")) {
-            try {
-                viewHolder.setArtist(new String(items.get(position).getArtist().getBytes("UTF-8"),"UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            try {
-                viewHolder.setTitle(new String(items.get(position).getSongtitle().getBytes("UTF-8"),"UTF-8"));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
+            viewHolder.setArtist(items.get(position).getArtist());
+            viewHolder.setTitle(items.get(position).getSongtitle());
             viewHolder.setFilename(items.get(position).getName());
             viewHolder.setPath(items.get(position).getPath());
             viewHolder.setCheckState(this.toggle);
@@ -102,7 +95,7 @@ public class ListAdapter extends ArrayAdapter<ListItem> implements CompoundButto
     public void toggleRows() {
         this.toggle = !this.toggle;
 
-        for (ViewHolder viewHolder:viewHolderList) {
+        for (ViewHolder viewHolder : viewHolderList) {
             viewHolder.setCheckState(toggle);
         }
 
@@ -121,7 +114,7 @@ public class ListAdapter extends ArrayAdapter<ListItem> implements CompoundButto
             }
         }
 
-        Button btn = context.getEditButton();
+        Button btn = context.getEdit();
         btn.setEnabled(isAtLeastOneChecked);
     }
 

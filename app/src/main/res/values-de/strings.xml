@@ -21,9 +21,13 @@
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_edit">Editieren</string>
     <string name="title_activity_convert">Konvertieren</string>
-    <string name="cover_text">Um Albumcover zu erhalten, empfehlen wir Ihnen Album Art Grabber zu verwenden!</string>
+    <string name="cover_text">Um Albumcover zu bearbeiten, empfehlen wir Ihnen Album Art Grabber zu verwenden!</string>
     <string name="click_here">Hier klicken: https://play.google.com/store/apps/details?id=com.citc.aag</string>
     <string name="path">Pfad: </string>
     <string name="access_denied_message">Zugriff verweigert!</string>
     <string name="maintain">beibehalten</string>
+    <string name="preview">Vorschau</string>
+    <string name="saved">gespeichert</string>
+    <string name="converted">konvertiert</string>
+    <string name="convert_description">Wähle aus dem Dateinamen und tippe auf die unteren Buttons um den gewünschten Tag zuzuweisen.</string>
 </resources>

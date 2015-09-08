@@ -7,15 +7,6 @@ public class ListItem {
 
     private String path;
     private String name;
-
-    public String getSongtitle() {
-        return songtitle;
-    }
-
-    public void setSongtitle(String songtitle) {
-        this.songtitle = songtitle;
-    }
-
     private String songtitle;
     private String artist;
 
@@ -23,6 +14,14 @@ public class ListItem {
         super();
         this.path = path;
         this.name = name;
+    }
+
+    public String getSongtitle() {
+        return songtitle;
+    }
+
+    public void setSongtitle(String songtitle) {
+        this.songtitle = songtitle;
     }
 
     public String getName() {

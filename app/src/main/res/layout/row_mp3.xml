@@ -7,7 +7,8 @@
     android:clickable="false"
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
-    android:focusableInTouchMode="false">
+    android:focusableInTouchMode="false"
+    android:background="@drawable/row_selector">
 
     <!--  ListRow Left side Thumbnail image -->
     <LinearLayout android:id="@+id/thumbnail"
@@ -15,7 +16,8 @@
         android:layout_height="wrap_content"
         android:padding="3dip"
         android:layout_alignParentStart="true"
-        android:layout_marginEnd="5dip">
+        android:layout_marginEnd="5dip"
+        android:background="@drawable/row_selector">
 
         <CheckBox
             android:layout_width="wrap_content"
@@ -32,20 +34,19 @@
         android:layout_height="wrap_content"
         android:textColor="@color/accent_material_light"
         android:textSize="12sp"
-        android:text="artist"
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/thumbnail" />
+        android:layout_toEndOf="@+id/thumbnail"
+        android:background="@drawable/row_selector"/>
 
     <!--File Name -->
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="title"
         android:id="@+id/row_title"
         android:textSize="15sp"
         android:typeface="sans"
@@ -56,12 +57,12 @@
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:layout_below="@+id/row_artist"
-        android:layout_toEndOf="@+id/thumbnail" />
+        android:layout_toEndOf="@+id/thumbnail"
+        android:background="@drawable/row_selector"/>
 
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="filename"
         android:id="@+id/row_mp3_filename"
         android:textSize="12sp"
         android:typeface="sans"
@@ -72,7 +73,8 @@
         android:focusableInTouchMode="false"
         android:layout_below="@+id/row_title"
         android:layout_toEndOf="@+id/thumbnail"
-        android:textStyle="italic" />
+        android:textStyle="italic"
+        android:background="@drawable/row_selector"/>
 
 </RelativeLayout>
 

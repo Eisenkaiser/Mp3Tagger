@@ -21,9 +21,13 @@
     <string name="rating">Rating</string>
     <string name="title_activity_edit">Edit</string>
     <string name="title_activity_convert">Convert</string>
+    <string name="convert_description">Select from the filename and click on the buttons below to assign the desired tag.</string>
     <string name="path">Path: </string>
     <string name="maintain">maintain</string>
-    <string name="cover_text">To get the album covers, we recommend to use Album Art Grabber!</string>
+    <string name="cover_text">To edit album covers, we recommend to use Album Art Grabber!</string>
     <string name="click_here">Click here: https://play.google.com/store/apps/details?id=com.citc.aag</string>
     <string name="access_denied_message">Access denied!</string>
+    <string name="preview">Preview</string>
+    <string name="saved">saved</string>
+    <string name="converted">converted</string>
 </resources>
