@@ -24,7 +24,7 @@ import java.util.List;
 
 public class EditActivity extends Activity implements TextWatcher {
 
-    String maintain;
+    private String maintain;
     private List<Mp3File> files;
     private TextView artist;
     private TextView album;
@@ -97,15 +97,17 @@ public class EditActivity extends Activity implements TextWatcher {
 
     private void LoadData(List<Mp3File> mp3FileList) throws UnsupportedEncodingException {
 
+        if (mp3FileList == null | mp3FileList.size() == 0) return;
+
         ID3v2 id3v2 = mp3FileList.get(0).getId3v2Tag();
 
-        String currentArtist = id3v2.getArtist();
-        String currentAlbum = id3v2.getAlbum();
-        String currentTitle = id3v2.getTitle();
-        String currentTrack = id3v2.getTrack();
-        String currentGenre = id3v2.getGenreDescription();
-        String currentYear = id3v2.getYear();
-        String currentComment = id3v2.getComment();
+        String currentArtist = (id3v2.getArtist() == null) ? "" : id3v2.getArtist();
+        String currentAlbum = (id3v2.getAlbum() == null) ? "" : id3v2.getAlbum();
+        String currentTitle = (id3v2.getTitle() == null) ? "" : id3v2.getTitle();
+        String currentTrack = (id3v2.getTrack() == null) ? "" : id3v2.getTrack();
+        String currentGenre = (id3v2.getGenreDescription() == null) ? "" : id3v2.getGenreDescription();
+        String currentYear = (id3v2.getYear() == null) ? "" : id3v2.getYear();
+        String currentComment = (id3v2.getComment() == null) ? "" : id3v2.getComment();
 
         artist.setText(currentArtist);
         album.setText(currentAlbum);
@@ -119,31 +121,31 @@ public class EditActivity extends Activity implements TextWatcher {
 
             id3v2 = mp3File.getId3v2Tag();
 
-            if (!currentArtist.equals(id3v2.getArtist())) {
+            if (!currentArtist.equals((id3v2.getArtist() == null) ? "" : id3v2.getArtist())) {
                 artist.setText(maintain);
             }
 
-            if (!currentAlbum.equals(id3v2.getAlbum())) {
+            if (!currentAlbum.equals((id3v2.getAlbum() == null) ? "" : id3v2.getAlbum())) {
                 album.setText(maintain);
             }
 
-            if (!currentTitle.equals(id3v2.getTitle())) {
+            if (!currentTitle.equals((id3v2.getTitle() == null) ? "" : id3v2.getTitle())) {
                 title.setText(maintain);
             }
 
-            if (!currentTrack.equals(id3v2.getTrack())) {
+            if (!currentTrack.equals((id3v2.getTrack() == null) ? "" : id3v2.getTrack())) {
                 track.setText(maintain);
             }
 
-            if (!currentGenre.equals(id3v2.getGenreDescription())) {
+            if (!currentGenre.equals((id3v2.getGenreDescription() == null) ? "" : id3v2.getGenreDescription())) {
                 genre.setText(maintain);
             }
 
-            if (!currentYear.equals(id3v2.getYear())) {
+            if (!currentYear.equals((id3v2.getYear() == null) ? "" : id3v2.getYear())) {
                 year.setText(maintain);
             }
 
-            if (!currentComment.equals(id3v2.getComment())) {
+            if (!currentComment.equals((id3v2.getComment() == null) ? "" : id3v2.getComment())) {
                 comment.setText(maintain);
             }
         }
@@ -155,13 +157,13 @@ public class EditActivity extends Activity implements TextWatcher {
 
         for (Mp3File mp3File : mp3FileList) {
             id3v2 = mp3File.getId3v2Tag();
-            id3v2.setArtist((artist.getText().equals(maintain) ? id3v2.getArtist() : artist.getText().toString()));
-            id3v2.setAlbum((album.getText().equals(maintain) ? id3v2.getAlbum() : album.getText().toString()));
-            id3v2.setTitle((title.getText().equals(maintain) ? id3v2.getTitle() : title.getText().toString()));
-            id3v2.setTrack((track.getText().equals(maintain) ? id3v2.getTrack() : track.getText().toString()));
-            id3v2.setGenreDescription((genre.getText().equals(maintain) ? id3v2.getGenreDescription() : genre.getText().toString()));
-            id3v2.setYear((year.getText().equals(maintain) ? id3v2.getYear() : year.getText().toString()));
-            id3v2.setComment((comment.getText().equals(maintain) ? id3v2.getComment() : comment.getText().toString()));
+            id3v2.setArtist((artist.getText().toString().equals(maintain) ? id3v2.getArtist() : artist.getText().toString()));
+            id3v2.setAlbum((album.getText().toString().equals(maintain) ? id3v2.getAlbum() : album.getText().toString()));
+            id3v2.setTitle((title.getText().toString().equals(maintain) ? id3v2.getTitle() : title.getText().toString()));
+            id3v2.setTrack((track.getText().toString().equals(maintain) ? id3v2.getTrack() : track.getText().toString()));
+            id3v2.setGenreDescription((genre.getText().toString().equals(maintain) ? id3v2.getGenreDescription() : genre.getText().toString()));
+            id3v2.setYear((year.getText().toString().equals(maintain) ? id3v2.getYear() : year.getText().toString()));
+            id3v2.setComment((comment.getText().toString().equals(maintain) ? id3v2.getComment() : comment.getText().toString()));
             mp3File.save(mp3File.getFilename());
             this.finish();
         }

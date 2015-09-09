@@ -53,7 +53,7 @@ public class MainActivity extends ListActivity {
             getDir(ROOT);
             // load the list view
             setListAdapter(adapter);
-        } catch (IOException| UnsupportedTagException | InvalidDataException e) {
+        } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }
     }
@@ -81,7 +81,9 @@ public class MainActivity extends ListActivity {
 
         List<String> mp3filePaths = new ArrayList<>();
 
-        if (file != null) mp3filePaths.add(file.getPath());
+        if (file != null) {
+            mp3filePaths.add(file.getPath());
+        }
 
         for (ListAdapter.ViewHolder viewHolder : adapter.getListOfViewHolders()) {
             if (viewHolder.getPath().endsWith(".mp3")) {
@@ -118,7 +120,9 @@ public class MainActivity extends ListActivity {
 
         for (File file : files) {
 
-            if (!file.canWrite()) {continue;}
+            if (!file.canWrite()) {
+                continue;
+            }
 
             ListItem item = new ListItem(file.getPath(), file.getName());
             item.setPath(file.getPath());
