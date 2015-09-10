@@ -4,13 +4,12 @@
     <string name="artist">Interpret</string>
     <string name="browse">Durchsuchen</string>
     <string name="cancel">Abbrechen</string>
-    <string name="comment">Kommentar</string>
     <string name="composer">Komponist</string>
     <string name="cover">Cover</string>
     <string name="deselect_all">Auswahl aufheben</string>
     <string name="edit">Bearbeiten</string>
     <string name="genre">Genre</string>
-    <string name="convert">Konvertieren</string>
+    <string name="convert">Dateiname zu Tag</string>
     <string name="no_data">Keine Daten</string>
     <string name="save">Änderungen speichern</string>
     <string name="select_all">Alles auswählen</string>
@@ -21,13 +20,13 @@
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_edit">Editieren</string>
     <string name="title_activity_convert">Konvertieren</string>
-    <string name="cover_text">Um Albumcover zu bearbeiten, empfehlen wir Ihnen Album Art Grabber zu verwenden!</string>
-    <string name="click_here">Hier klicken: https://play.google.com/store/apps/details?id=com.citc.aag</string>
     <string name="path">Pfad: </string>
     <string name="access_denied_message">Zugriff verweigert!</string>
-    <string name="maintain">beibehalten</string>
+    <string name="several_selected">Mehrfache Auswahl</string>
     <string name="preview">Vorschau</string>
-    <string name="saved">gespeichert</string>
-    <string name="converted">konvertiert</string>
+    <string name="saved">Gespeichert</string>
+    <string name="converted">Konvertiert</string>
     <string name="convert_description">Wähle aus dem Dateinamen und tippe auf die unteren Buttons um den gewünschten Tag zuzuweisen.</string>
+    <string name="empty">Leer</string>
+    <string name="clear_selection">Auswahl bereinigen</string>
 </resources>

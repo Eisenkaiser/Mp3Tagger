@@ -16,30 +16,27 @@ import com.example.admin.mp3tagger.mp3agic.UnsupportedTagException;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConvertActivity extends Activity {
+
+    List<Mp3File> files;
 
     private Button track;
     private Button title;
     private Button album;
     private Button artist;
     private Button genre;
-    private Button comment;
     private Button year;
 
-    private Button convert;
     private TextView path;
-    List<Mp3File> files;
 
     private String extractedTrack = "";
     private String extractedTitle = "";
     private String extractedAlbum = "";
     private String extractedArtist = "";
     private String extractedGenre = "";
-    private String extractedComment = "";
     private String extractedYear = "";
 
     @Override
@@ -52,12 +49,9 @@ public class ConvertActivity extends Activity {
 
         // sets the first path as a template
         path = (TextView) this.findViewById(R.id.convert_path);
-        path.setText(new File(extras.getStringArrayList("mp3filePaths").get(0)).getName());
+        path.setText((new File(extras.getStringArrayList("mp3filePaths").get(0)).getName()).split(".mp3")[0]);
         path.setTextIsSelectable(true);
-
         initializeButtons();
-
-        convert.setEnabled(false);
     }
 
     @Nullable
@@ -82,62 +76,90 @@ public class ConvertActivity extends Activity {
         track = (Button) findViewById(R.id.convert_track);
         track.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 extractedTrack = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                track.setText(getResources().getString(R.string.track) + " " + extractedTrack);
+
+                if (extractedTrack.length() > 0) {
+                    track.setText(extractedTrack);
+                } else {
+                    track.setText(getResources().getString(R.string.track));
+                }
+
             }
         });
 
         title = (Button) findViewById(R.id.convert_title);
         title.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 extractedTitle = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                title.setText(getResources().getString(R.string.title) + " " + extractedTitle);
-                if (extractedTitle.length() > 0) convert.setEnabled(true);
+
+                if (extractedTitle.length() > 0) {
+                    title.setText(extractedTitle);
+                } else {
+                    title.setText(getResources().getString(R.string.title));
+                }
+
             }
         });
 
         album = (Button) findViewById(R.id.convert_album);
         album.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 extractedAlbum = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                album.setText(getResources().getString(R.string.album) + " " + extractedAlbum);
-                if (extractedAlbum.length() > 0) convert.setEnabled(true);
+
+                if (extractedAlbum.length() > 0) {
+                    album.setText(extractedAlbum);
+                } else {
+                    album.setText(getResources().getString(R.string.album));
+                }
+
             }
         });
 
         artist = (Button) findViewById(R.id.convert_artist);
         artist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 extractedArtist = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                artist.setText(getResources().getString(R.string.artist) + " " + extractedArtist);
-                if (extractedArtist.length() > 0) convert.setEnabled(true);
+
+                if (extractedArtist.length() > 0){
+                    artist.setText(extractedArtist);
+                } else {
+                    artist.setText(getResources().getString(R.string.artist));
+                }
+
             }
         });
 
         year = (Button) findViewById(R.id.convert_year);
         year.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+
                 extractedYear = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                year.setText(getResources().getString(R.string.year) + " " + extractedYear);
-                if (extractedYear.length() > 0) convert.setEnabled(true);
+
+                if (extractedYear.length() > 0){
+                    year.setText(extractedYear);
+                } else {
+                    year.setText(getResources().getString(R.string.year));
+                }
+
             }
         });
 
         genre = (Button) findViewById(R.id.convert_genre);
         genre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                extractedGenre = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                genre.setText(getResources().getString(R.string.genre) + " " + extractedGenre);
-                if (extractedGenre.length() > 0) convert.setEnabled(true);
-            }
-        });
 
-        comment = (Button) findViewById(R.id.convert_comment);
-        comment.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                extractedComment = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
-                comment.setText(getResources().getString(R.string.comment) + " " + extractedComment);
-                if (extractedComment.length() > 0) convert.setEnabled(true);
+                extractedGenre = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+
+                if (extractedGenre.length() > 0){
+                    genre.setText(extractedGenre);
+                } else {
+                    genre.setText(getResources().getString(R.string.genre));
+                }
+
             }
         });
 
@@ -148,7 +170,7 @@ public class ConvertActivity extends Activity {
             }
         });
 
-        convert = (Button) findViewById(R.id.convert_convert);
+        Button convert = (Button) findViewById(R.id.convert_convert);
         convert.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
@@ -161,45 +183,74 @@ public class ConvertActivity extends Activity {
                 Toast.makeText(getApplicationContext(), R.string.converted, Toast.LENGTH_LONG).show();
             }
         });
+
+        Button clear = (Button) findViewById(R.id.convert_clear);
+        clear.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                clearSelection();
+            }
+        });
+    }
+
+    private void clearSelection() {
+        extractedAlbum = "";
+        extractedTitle = "";
+        extractedArtist = "";
+        extractedTrack = "";
+        extractedYear = "";
+        extractedGenre = "";
+        album.setText(getResources().getString(R.string.album));
+        title.setText(getResources().getString(R.string.title));
+        artist.setText(getResources().getString(R.string.artist));
+        track.setText(getResources().getString(R.string.track));
+        genre.setText(getResources().getString(R.string.genre));
+        year.setText(getResources().getString(R.string.year));
     }
 
     private void ConvertFilenameToTags() throws IOException, NotSupportedException {
 
         ID3v2 id3v2;
+        boolean isChanged = false;
 
-        for(Mp3File mp3File:files){
+        for (Mp3File mp3File : files) {
 
             id3v2 = mp3File.getId3v2Tag();
 
-            if (!extractedTrack.equals("")){
+            if (!extractedTrack.equals("")) {
                 id3v2.setTrack(extractedTrack);
+                isChanged = true;
             }
 
-            if (!extractedArtist.equals("")){
+            if (!extractedArtist.equals("")) {
                 id3v2.setArtist(extractedArtist);
+                isChanged = true;
             }
 
-            if (!extractedTitle.equals("")){
+            if (!extractedTitle.equals("")) {
                 id3v2.setTitle(extractedTitle);
+                isChanged = true;
             }
 
-            if (!extractedAlbum.equals("")){
+            if (!extractedAlbum.equals("")) {
                 id3v2.setAlbum(extractedAlbum);
+                isChanged = true;
             }
 
-            if (!extractedYear.equals("")){
+            if (!extractedYear.equals("")) {
                 id3v2.setYear(extractedYear);
+                isChanged = true;
             }
 
-            if (!extractedGenre.equals("")){
+            if (!extractedGenre.equals("")) {
                 id3v2.setGenreDescription(extractedGenre);
+                isChanged = true;
             }
 
-            if (!extractedComment.equals("")){
-                id3v2.setComment(extractedComment);
+            if (isChanged) {
+                mp3File.save(mp3File.getFilename());
+            } else {
+                return;
             }
-
-            mp3File.save(mp3File.getFilename());
         }
     }
 }

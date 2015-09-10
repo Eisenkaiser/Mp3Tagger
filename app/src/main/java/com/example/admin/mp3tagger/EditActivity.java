@@ -2,12 +2,16 @@ package com.example.admin.mp3tagger;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.admin.mp3tagger.mp3agic.InvalidDataException;
@@ -16,25 +20,26 @@ import com.example.admin.mp3tagger.mp3agic.ID3v2;
 import com.example.admin.mp3tagger.mp3agic.NotSupportedException;
 import com.example.admin.mp3tagger.mp3agic.UnsupportedTagException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class EditActivity extends Activity implements TextWatcher {
+public class EditActivity extends Activity {
 
-    private String maintain;
+    private String severalSelected;
     private List<Mp3File> files;
-    private TextView artist;
-    private TextView album;
-    private TextView title;
-    private TextView track;
-    private TextView genre;
-    private TextView year;
-    private TextView comment;
-    private Button save;
+    private EditText artist;
+    private EditText album;
+    private EditText title;
+    private EditText track;
+    private EditText genre;
+    private EditText year;
     private Bundle extras;
+    private ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +47,9 @@ public class EditActivity extends Activity implements TextWatcher {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
-        maintain = "< " + getString(R.string.maintain) + " >";
-
-        initializeTextViews();
+        initializeEditTexts();
         InitializeButtons();
-        initializeListeners();
-
+        severalSelected = getResources().getString(R.string.several_selected);
         LoadMp3List();
 
         try {
@@ -55,28 +57,15 @@ public class EditActivity extends Activity implements TextWatcher {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-
-        this.save.setEnabled(false);
     }
 
-    private void initializeListeners() {
-        this.artist.addTextChangedListener(this);
-        this.album.addTextChangedListener(this);
-        this.track.addTextChangedListener(this);
-        this.year.addTextChangedListener(this);
-        this.comment.addTextChangedListener(this);
-        this.title.addTextChangedListener(this);
-        this.genre.addTextChangedListener(this);
-    }
-
-    private void initializeTextViews() {
-        artist = (TextView) findViewById(R.id.edit_text_artist);
-        album = (TextView) findViewById(R.id.edit_text_album);
-        title = (TextView) findViewById(R.id.edit_text_title);
-        track = (TextView) findViewById(R.id.edit_text_track);
-        genre = (TextView) findViewById(R.id.edit_text_genre);
-        year = (TextView) findViewById(R.id.edit_text_year);
-        comment = (TextView) findViewById(R.id.edit_text_comment);
+    private void initializeEditTexts() {
+        artist = (EditText) findViewById(R.id.edit_text_artist);
+        album = (EditText) findViewById(R.id.edit_text_album);
+        title = (EditText) findViewById(R.id.edit_text_title);
+        track = (EditText) findViewById(R.id.edit_text_track);
+        genre = (EditText) findViewById(R.id.edit_text_genre);
+        year = (EditText) findViewById(R.id.edit_text_year);
     }
 
     private void LoadMp3List() {
@@ -101,13 +90,104 @@ public class EditActivity extends Activity implements TextWatcher {
 
         ID3v2 id3v2 = mp3FileList.get(0).getId3v2Tag();
 
-        String currentArtist = (id3v2.getArtist() == null) ? "" : id3v2.getArtist();
-        String currentAlbum = (id3v2.getAlbum() == null) ? "" : id3v2.getAlbum();
-        String currentTitle = (id3v2.getTitle() == null) ? "" : id3v2.getTitle();
-        String currentTrack = (id3v2.getTrack() == null) ? "" : id3v2.getTrack();
-        String currentGenre = (id3v2.getGenreDescription() == null) ? "" : id3v2.getGenreDescription();
-        String currentYear = (id3v2.getYear() == null) ? "" : id3v2.getYear();
-        String currentComment = (id3v2.getComment() == null) ? "" : id3v2.getComment();
+        byte[] currentImage = id3v2.getAlbumImage();
+        String currentArtist = id3v2.getArtist();
+        String currentAlbum = id3v2.getAlbum();
+        String currentTitle = id3v2.getTitle();
+        String currentTrack = id3v2.getTrack();
+        String currentGenre = id3v2.getGenreDescription();
+        String currentYear = id3v2.getYear();
+
+        boolean imgIsDifferent = false;
+
+        for (Mp3File mp3File : mp3FileList) {
+
+            id3v2 = mp3File.getId3v2Tag();
+
+            if (!imgIsDifferent & !Arrays.equals(currentImage, id3v2.getAlbumImage())){
+                imgIsDifferent = true;
+            }
+
+            if (currentArtist == null & id3v2.getArtist() == null) {
+                artist.setHint(R.string.empty);
+                currentArtist = "";
+            } else if (currentArtist != null ^ id3v2.getArtist() != null) {
+                artist.setHint(severalSelected);
+                currentArtist = "";
+            } else if (!currentArtist.equals(id3v2.getArtist())) {
+                artist.setHint(severalSelected);
+                currentArtist = "";
+            } else {
+                artist.setHint("");
+            }
+
+            if (currentAlbum == null & id3v2.getAlbum() == null) {
+                album.setHint(R.string.empty);
+                currentAlbum = "";
+            } else if (currentAlbum != null ^ id3v2.getAlbum() != null) {
+                album.setHint(severalSelected);
+                currentAlbum = "";
+            } else if (!currentAlbum.equals(id3v2.getAlbum())) {
+                album.setHint(severalSelected);
+                currentAlbum = "";
+            } else {
+                album.setHint("");
+            }
+
+            if (currentTitle == null & id3v2.getTitle() == null) {
+                title.setHint(R.string.empty);
+                currentTitle = "";
+            } else if (currentTitle != null ^ id3v2.getTitle() != null) {
+                title.setHint(severalSelected);
+                currentTitle = "";
+            } else if (!currentTitle.equals(id3v2.getTitle())) {
+                title.setHint(severalSelected);
+                currentTitle = "";
+            } else {
+                title.setHint("");
+            }
+
+
+            if (currentTrack == null & id3v2.getTrack() == null) {
+                track.setHint(R.string.empty);
+                currentTrack = "";
+            } else if (currentTrack != null ^ id3v2.getTrack() != null) {
+                track.setHint(severalSelected);
+                currentTrack = "";
+            } else if (!currentTrack.equals(id3v2.getTrack())) {
+                track.setHint(severalSelected);
+                currentTrack = "";
+            } else {
+                track.setHint("");
+            }
+
+
+            if (currentGenre == null & id3v2.getGenreDescription() == null) {
+                genre.setHint(R.string.empty);
+                currentGenre = "";
+            } else if (currentGenre != null ^ id3v2.getGenreDescription() != null) {
+                genre.setHint(severalSelected);
+                currentGenre = "";
+            } else if (!currentGenre.equals(id3v2.getGenreDescription())) {
+                genre.setHint(severalSelected);
+                currentGenre = "";
+            } else {
+                genre.setHint("");
+            }
+
+            if (currentYear == null & id3v2.getYear() == null) {
+                year.setHint(R.string.empty);
+                currentYear = "";
+            } else if (currentYear != null ^ id3v2.getYear() != null) {
+                year.setHint(severalSelected);
+                currentYear = "";
+            } else if (!currentYear.equals(id3v2.getYear())) {
+                year.setHint(severalSelected);
+                currentYear = "";
+            } else {
+                year.setHint("");
+            }
+        }
 
         artist.setText(currentArtist);
         album.setText(currentAlbum);
@@ -115,58 +195,45 @@ public class EditActivity extends Activity implements TextWatcher {
         track.setText(currentTrack);
         genre.setText(currentGenre);
         year.setText(currentYear);
-        comment.setText(currentComment);
 
-        for (Mp3File mp3File : mp3FileList) {
+        Bitmap bmp;
 
-            id3v2 = mp3File.getId3v2Tag();
-
-            if (!currentArtist.equals((id3v2.getArtist() == null) ? "" : id3v2.getArtist())) {
-                artist.setText(maintain);
-            }
-
-            if (!currentAlbum.equals((id3v2.getAlbum() == null) ? "" : id3v2.getAlbum())) {
-                album.setText(maintain);
-            }
-
-            if (!currentTitle.equals((id3v2.getTitle() == null) ? "" : id3v2.getTitle())) {
-                title.setText(maintain);
-            }
-
-            if (!currentTrack.equals((id3v2.getTrack() == null) ? "" : id3v2.getTrack())) {
-                track.setText(maintain);
-            }
-
-            if (!currentGenre.equals((id3v2.getGenreDescription() == null) ? "" : id3v2.getGenreDescription())) {
-                genre.setText(maintain);
-            }
-
-            if (!currentYear.equals((id3v2.getYear() == null) ? "" : id3v2.getYear())) {
-                year.setText(maintain);
-            }
-
-            if (!currentComment.equals((id3v2.getComment() == null) ? "" : id3v2.getComment())) {
-                comment.setText(maintain);
-            }
+        if (imgIsDifferent) {
+            bmp = BitmapFactory.decodeByteArray(fillImageWithPlaceHolder(), 0, fillImageWithPlaceHolder().length);
+        }else {
+            bmp = BitmapFactory.decodeByteArray(currentImage, 0, currentImage.length);
         }
+
+        imageButton.setImageBitmap(bmp);
     }
 
-    private void SaveData(List<Mp3File> mp3FileList) throws IOException, NotSupportedException {
+    private byte[] fillImageWithPlaceHolder() {
+        Drawable d = ContextCompat.getDrawable(this, R.drawable.img_placeholder);
+        Bitmap bitmap = ((BitmapDrawable)d).getBitmap();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        return stream.toByteArray();
+    }
+
+    private void SaveTags(List<Mp3File> mp3FileList) throws IOException, NotSupportedException {
 
         ID3v2 id3v2;
 
         for (Mp3File mp3File : mp3FileList) {
+
             id3v2 = mp3File.getId3v2Tag();
-            id3v2.setArtist((artist.getText().toString().equals(maintain) ? id3v2.getArtist() : artist.getText().toString()));
-            id3v2.setAlbum((album.getText().toString().equals(maintain) ? id3v2.getAlbum() : album.getText().toString()));
-            id3v2.setTitle((title.getText().toString().equals(maintain) ? id3v2.getTitle() : title.getText().toString()));
-            id3v2.setTrack((track.getText().toString().equals(maintain) ? id3v2.getTrack() : track.getText().toString()));
-            id3v2.setGenreDescription((genre.getText().toString().equals(maintain) ? id3v2.getGenreDescription() : genre.getText().toString()));
-            id3v2.setYear((year.getText().toString().equals(maintain) ? id3v2.getYear() : year.getText().toString()));
-            id3v2.setComment((comment.getText().toString().equals(maintain) ? id3v2.getComment() : comment.getText().toString()));
+
+            id3v2.setArtist((artist.getHint().toString().equals(severalSelected) ? id3v2.getArtist() : artist.getText().toString()));
+            id3v2.setAlbum((album.getHint().toString().equals(severalSelected) ? id3v2.getAlbum() : album.getText().toString()));
+            id3v2.setTitle((title.getHint().toString().equals(severalSelected) ? id3v2.getTitle() : title.getText().toString()));
+            id3v2.setTrack((track.getHint().toString().equals(severalSelected) ? id3v2.getTrack() : track.getText().toString()));
+            //id3v2.setGenreDescription((genre.getHint().toString().equals(severalSelected) ? id3v2.getGenreDescription() : genre.getText().toString())); TODO Kombobox auswahl einbauen weil description bzw. genre mit indizes arbeitet
+            id3v2.setYear((year.getHint().toString().equals(severalSelected) ? id3v2.getYear() : year.getText().toString()));
+
             mp3File.save(mp3File.getFilename());
-            this.finish();
         }
+
+        this.finish();
     }
 
     private void InitializeButtons() {
@@ -178,16 +245,14 @@ public class EditActivity extends Activity implements TextWatcher {
             }
         });
 
-        save = (Button) findViewById(R.id.convert_convert);
+        Button save = (Button) findViewById(R.id.convert_convert);
         save.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
                 try {
-                    SaveData(files);
+                    SaveTags(files);
                 } catch (IOException | NotSupportedException e) {
                     e.printStackTrace();
                 }
-
                 Toast.makeText(getApplicationContext(), R.string.saved, Toast.LENGTH_LONG).show();
             }
         });
@@ -200,18 +265,13 @@ public class EditActivity extends Activity implements TextWatcher {
                 startActivity(intent);
             }
         });
-    }
 
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-        this.save.setEnabled(true);
+        imageButton = (ImageButton) findViewById(R.id.edit_imagebutton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                // TODO Load image gallery
+                // TODO Resize image to 300x300px
+            }
+        });
     }
 }

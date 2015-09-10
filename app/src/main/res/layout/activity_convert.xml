@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/convert_path"
                 android:textStyle="bold"
                 android:textColor="@color/accent_material_light"
@@ -111,10 +111,11 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/comment"
-                    android:id="@+id/convert_comment"
+                    android:text="@string/clear_selection"
+                    android:id="@+id/convert_clear"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"
+                    android:background="#ff9a9a" />
 
             </LinearLayout>
 

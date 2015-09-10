@@ -23,18 +23,28 @@
             android:orientation="vertical"
             android:weightSum="1">
 
+            <ImageButton
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:id="@+id/edit_imagebutton"
+                android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/cover"
+                android:clickable="false"
+                android:scaleType="fitXY"
+                android:padding="0dp"
+                android:src="@drawable/img_placeholder" />
+
             <TextView
-                android:id="@+id/text_artist"
+                android:id="@+id/text_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginTop="5dp"
-                android:text="@string/artist"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="@string/title"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
-                android:id="@+id/edit_text_artist"
+                android:id="@+id/edit_text_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -48,7 +58,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="@string/album"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/edit_text_album"
@@ -59,16 +69,34 @@
                 android:inputType="text" />
 
             <TextView
-                android:id="@+id/text_title"
+                android:id="@+id/text_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:text="@string/title"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_marginTop="5dp"
+                android:text="@string/artist"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
-                android:id="@+id/edit_text_title"
+                android:id="@+id/edit_text_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:inputType="text" />
+
+            <TextView
+                android:id="@+id/text_Genre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="@string/genre"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
+            <EditText
+                android:id="@+id/edit_text_genre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -82,7 +110,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="@string/track"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/edit_text_track"
@@ -93,30 +121,13 @@
                 android:inputType="number" />
 
             <TextView
-                android:id="@+id/text_Genre"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/genre"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/edit_text_genre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="text" />
-
-            <TextView
                 android:id="@+id/text_year"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="@string/year"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/edit_text_year"
@@ -125,54 +136,6 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:inputType="numberDecimal" />
-
-            <TextView
-                android:id="@+id/text_comment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/comment"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
-            <EditText
-                android:id="@+id/edit_text_comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="text" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:id="@+id/edit_cover_lable"
-                android:layout_gravity="center_horizontal|left"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:text="@string/cover" />
-
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/cover_text"
-                android:id="@+id/cover_text"
-                android:layout_margin="5dp"
-                android:layout_gravity="center_horizontal|left"
-                android:textStyle="italic" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/click_here"
-                android:id="@+id/edit_link"
-                android:autoLink="web"
-                android:textColorLink="@color/accent_material_light"
-                android:layout_gravity="center_horizontal"
-                android:layout_margin="5dp" />
 
             <Button
                 android:id="@+id/edit_convert"
