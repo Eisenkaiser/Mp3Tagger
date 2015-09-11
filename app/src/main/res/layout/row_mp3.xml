@@ -8,7 +8,7 @@
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:background="@drawable/row_selector">
+    android:background="@drawable/row_selector" >
 
     <!--  ListRow Left side Thumbnail image -->
     <LinearLayout android:id="@+id/thumbnail"
@@ -32,7 +32,6 @@
         android:id="@+id/row_artist"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/accent_material_light"
         android:textSize="12sp"
         android:clickable="false"
         android:focusable="false"
@@ -58,7 +57,7 @@
         android:focusableInTouchMode="false"
         android:layout_below="@+id/row_artist"
         android:layout_toEndOf="@+id/thumbnail"
-        android:background="@drawable/row_selector"/>
+        android:background="@drawable/row_selector" />
 
     <TextView
         android:layout_width="fill_parent"
@@ -74,7 +73,7 @@
         android:layout_below="@+id/row_title"
         android:layout_toEndOf="@+id/thumbnail"
         android:textStyle="italic"
-        android:background="@drawable/row_selector"/>
+        android:background="@drawable/row_selector" />
 
 </RelativeLayout>
 

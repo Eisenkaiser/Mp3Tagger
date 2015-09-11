@@ -6,14 +6,20 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.mp3tagger.mp3agic.ID3v1Genres;
 import com.example.admin.mp3tagger.mp3agic.InvalidDataException;
 import com.example.admin.mp3tagger.mp3agic.Mp3File;
 import com.example.admin.mp3tagger.mp3agic.ID3v2;
@@ -26,9 +32,10 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
-public class EditActivity extends Activity {
+public class EditActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     private String severalSelected;
     private List<Mp3File> files;
@@ -36,10 +43,15 @@ public class EditActivity extends Activity {
     private EditText album;
     private EditText title;
     private EditText track;
-    private EditText genre;
     private EditText year;
     private Bundle extras;
     private ImageButton imageButton;
+    private Spinner spinner;
+    private ArrayAdapter<String> genreAdapter;
+    private  TextView genreText;
+    private  int currentGenrePosition;
+    private boolean isConverted = false;
+    private boolean genreIsChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +59,7 @@ public class EditActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        initializeGenreSpinner();
         initializeEditTexts();
         InitializeButtons();
         severalSelected = getResources().getString(R.string.several_selected);
@@ -59,12 +72,21 @@ public class EditActivity extends Activity {
         }
     }
 
+    private void initializeGenreSpinner() {
+        spinner = (Spinner) findViewById(R.id.edit_spinner);
+        List<String> genreList = Arrays.asList(ID3v1Genres.GENRES);
+        Collections.sort(genreList, String.CASE_INSENSITIVE_ORDER);
+        genreAdapter = new ArrayAdapter<>(this,R.layout.edit_genre_item, genreList);
+        genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(genreAdapter);
+        spinner.setOnItemSelectedListener(this);
+    }
+
     private void initializeEditTexts() {
         artist = (EditText) findViewById(R.id.edit_text_artist);
         album = (EditText) findViewById(R.id.edit_text_album);
         title = (EditText) findViewById(R.id.edit_text_title);
         track = (EditText) findViewById(R.id.edit_text_track);
-        genre = (EditText) findViewById(R.id.edit_text_genre);
         year = (EditText) findViewById(R.id.edit_text_year);
     }
 
@@ -95,10 +117,13 @@ public class EditActivity extends Activity {
         String currentAlbum = id3v2.getAlbum();
         String currentTitle = id3v2.getTitle();
         String currentTrack = id3v2.getTrack();
-        String currentGenre = id3v2.getGenreDescription();
+        String genreTextIfSeveralSelected = id3v2.getGenreDescription();
+        int currentGenre = id3v2.getGenre();
         String currentYear = id3v2.getYear();
 
         boolean imgIsDifferent = false;
+
+        genreText = (TextView) findViewById(R.id.text_Genre);
 
         for (Mp3File mp3File : mp3FileList) {
 
@@ -147,7 +172,6 @@ public class EditActivity extends Activity {
                 title.setHint("");
             }
 
-
             if (currentTrack == null & id3v2.getTrack() == null) {
                 track.setHint(R.string.empty);
                 currentTrack = "";
@@ -162,17 +186,14 @@ public class EditActivity extends Activity {
             }
 
 
-            if (currentGenre == null & id3v2.getGenreDescription() == null) {
-                genre.setHint(R.string.empty);
-                currentGenre = "";
-            } else if (currentGenre != null ^ id3v2.getGenreDescription() != null) {
-                genre.setHint(severalSelected);
-                currentGenre = "";
-            } else if (!currentGenre.equals(id3v2.getGenreDescription())) {
-                genre.setHint(severalSelected);
-                currentGenre = "";
+            if (genreTextIfSeveralSelected == null & id3v2.getGenreDescription() == null) {
+                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + getResources().getString(R.string.empty);
+            } else if (genreTextIfSeveralSelected != null ^ id3v2.getGenreDescription() != null) {
+                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + severalSelected;
+            } else if (!genreTextIfSeveralSelected.equals(id3v2.getGenreDescription())) {
+                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + severalSelected;
             } else {
-                genre.setHint("");
+                genreTextIfSeveralSelected = getResources().getString(R.string.genre);
             }
 
             if (currentYear == null & id3v2.getYear() == null) {
@@ -193,7 +214,8 @@ public class EditActivity extends Activity {
         album.setText(currentAlbum);
         title.setText(currentTitle);
         track.setText(currentTrack);
-        genre.setText(currentGenre);
+        genreText.setText(genreTextIfSeveralSelected);
+        spinner.setSelection(currentGenre);
         year.setText(currentYear);
 
         Bitmap bmp;
@@ -227,10 +249,11 @@ public class EditActivity extends Activity {
             id3v2.setAlbum((album.getHint().toString().equals(severalSelected) ? id3v2.getAlbum() : album.getText().toString()));
             id3v2.setTitle((title.getHint().toString().equals(severalSelected) ? id3v2.getTitle() : title.getText().toString()));
             id3v2.setTrack((track.getHint().toString().equals(severalSelected) ? id3v2.getTrack() : track.getText().toString()));
-            //id3v2.setGenreDescription((genre.getHint().toString().equals(severalSelected) ? id3v2.getGenreDescription() : genre.getText().toString())); TODO Kombobox auswahl einbauen weil description bzw. genre mit indizes arbeitet
+            id3v2.setGenreDescription((!genreText.getText().toString().equals(getResources().getString(R.string.genre)) & !genreIsChanged) ? id3v2.getGenreDescription() : genreAdapter.getItem(currentGenrePosition));
             id3v2.setYear((year.getHint().toString().equals(severalSelected) ? id3v2.getYear() : year.getText().toString()));
 
             mp3File.save(mp3File.getFilename());
+            //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(mp3File.getFilename())));
         }
 
         this.finish();
@@ -263,6 +286,7 @@ public class EditActivity extends Activity {
                 Intent intent = new Intent(getBaseContext(), ConvertActivity.class);
                 intent.putStringArrayListExtra("mp3filePaths", extras.getStringArrayList("mp3filePaths"));
                 startActivity(intent);
+                isConverted = true;
             }
         });
 
@@ -273,5 +297,34 @@ public class EditActivity extends Activity {
                 // TODO Resize image to 300x300px
             }
         });
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        currentGenrePosition = position;
+        genreIsChanged = true;
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onResume() {
+
+        super.onResume();
+
+        if (!isConverted) return;
+
+        LoadMp3List();
+
+        try {
+            LoadData(this.files);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        isConverted = !isConverted;
     }
 }

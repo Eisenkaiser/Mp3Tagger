@@ -154,9 +154,9 @@ public class MainActivity extends ListActivity {
     @Override
     public void onResume() {
 
-        if (adapter == null | parentPath == null) return;
-
         super.onResume();
+
+        if (adapter == null | parentPath == null) return;
 
         try {
             getDir(parentPath);

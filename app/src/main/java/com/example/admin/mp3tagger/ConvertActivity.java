@@ -1,6 +1,11 @@
 package com.example.admin.mp3tagger;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -8,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.admin.mp3tagger.mp3agic.ID3v1Genres;
 import com.example.admin.mp3tagger.mp3agic.ID3v2;
 import com.example.admin.mp3tagger.mp3agic.InvalidDataException;
 import com.example.admin.mp3tagger.mp3agic.Mp3File;
@@ -39,10 +45,14 @@ public class ConvertActivity extends Activity {
     private String extractedGenre = "";
     private String extractedYear = "";
 
+    private Context curContext;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_convert);
+
+        curContext = this;
 
         // loads all selected files from the previous activity
         Bundle extras = LoadMp3List();
@@ -77,12 +87,24 @@ public class ConvertActivity extends Activity {
         track.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedTrack = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedTrack = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
-                if (extractedTrack.length() > 0) {
-                    track.setText(extractedTrack);
-                } else {
+                if (extractedTrack.length() == 0) {
                     track.setText(getResources().getString(R.string.track));
+                } else {
+                    if (extractedTrack.matches("^-?\\d+$")) {
+                        track.setText(extractedTrack);
+                    } else {
+                        new AlertDialog.Builder(curContext)
+                                .setTitle(R.string.invalid_value)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                track.setText(getResources().getString(R.string.track));
+                                            }
+                                        }).show();
+                    }
                 }
 
             }
@@ -92,7 +114,7 @@ public class ConvertActivity extends Activity {
         title.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedTitle = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedTitle = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedTitle.length() > 0) {
                     title.setText(extractedTitle);
@@ -107,7 +129,7 @@ public class ConvertActivity extends Activity {
         album.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedAlbum = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedAlbum = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedAlbum.length() > 0) {
                     album.setText(extractedAlbum);
@@ -122,9 +144,9 @@ public class ConvertActivity extends Activity {
         artist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedArtist = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedArtist = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
-                if (extractedArtist.length() > 0){
+                if (extractedArtist.length() > 0) {
                     artist.setText(extractedArtist);
                 } else {
                     artist.setText(getResources().getString(R.string.artist));
@@ -137,12 +159,24 @@ public class ConvertActivity extends Activity {
         year.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedYear = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedYear = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
-                if (extractedYear.length() > 0){
-                    year.setText(extractedYear);
-                } else {
+                if (extractedYear.length() == 0) {
                     year.setText(getResources().getString(R.string.year));
+                } else {
+                    if (extractedYear.matches("^-?\\d+$")) {
+                        year.setText(extractedYear);
+                    } else {
+                        new AlertDialog.Builder(curContext)
+                                .setTitle(R.string.invalid_value)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                year.setText(getResources().getString(R.string.year));
+                                            }
+                                        }).show();
+                    }
                 }
 
             }
@@ -152,12 +186,24 @@ public class ConvertActivity extends Activity {
         genre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                extractedGenre = path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd());
+                extractedGenre = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
-                if (extractedGenre.length() > 0){
-                    genre.setText(extractedGenre);
-                } else {
+                if (extractedGenre.length() == 0) {
                     genre.setText(getResources().getString(R.string.genre));
+                } else {
+                    if (ID3v1Genres.matchGenreDescription(extractedGenre) != -1) {
+                        genre.setText(extractedGenre);
+                    } else {
+                        new AlertDialog.Builder(curContext)
+                                .setTitle(R.string.invalid_value)
+                                .setPositiveButton("OK",
+                                        new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                genre.setText(getResources().getString(R.string.genre));
+                                            }
+                                        }).show();
+                    }
                 }
 
             }
@@ -248,6 +294,7 @@ public class ConvertActivity extends Activity {
 
             if (isChanged) {
                 mp3File.save(mp3File.getFilename());
+                //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(mp3File.getFilename())));
             } else {
                 return;
             }

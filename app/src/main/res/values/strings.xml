@@ -29,4 +29,5 @@
     <string name="converted">Converted</string>
     <string name="empty">Empty</string>
     <string name="clear_selection">Clear selection</string>
+    <string name="invalid_value">Invalid value!</string>
 </resources>

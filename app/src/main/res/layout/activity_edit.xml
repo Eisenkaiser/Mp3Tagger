@@ -36,7 +36,7 @@
 
             <TextView
                 android:id="@+id/text_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -49,11 +49,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:inputType="text" />
+                android:inputType="textNoSuggestions" />
 
             <TextView
                 android:id="@+id/text_album"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -66,11 +66,11 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:inputType="text" />
+                android:inputType="textNoSuggestions" />
 
             <TextView
                 android:id="@+id/text_artist"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -84,28 +84,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:inputType="text" />
+                android:inputType="textNoSuggestions" />
 
             <TextView
                 android:id="@+id/text_Genre"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:text="@string/genre"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <EditText
-                android:id="@+id/edit_text_genre"
+            <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:inputType="text" />
+                android:id="@+id/edit_spinner"
+                android:spinnerMode="dialog" />
 
             <TextView
                 android:id="@+id/text_tracknumber"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -122,7 +120,7 @@
 
             <TextView
                 android:id="@+id/text_year"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -143,7 +141,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 android:layout_margin="5dp"
-                android:text="@string/convert" />
+                android:text="@string/convert"
+                android:textColor="#000" />
 
         </LinearLayout>
     </ScrollView>
@@ -157,7 +156,8 @@
         android:layout_alignParentStart="true"
         android:layout_gravity="center_horizontal"
         android:layout_margin="5dp"
-        android:text="@string/save" />
+        android:text="@string/save"
+        android:textColor="#000" />
 
     <Button
         android:id="@+id/edit_cancel"
@@ -169,6 +169,7 @@
         android:layout_gravity="right"
         android:layout_margin="5dp"
         android:layout_toEndOf="@+id/convert_convert"
-        android:text="@string/cancel" />
+        android:text="@string/cancel"
+        android:textColor="#000" />
 
 </RelativeLayout>

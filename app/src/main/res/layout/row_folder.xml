@@ -8,7 +8,7 @@
     android:descendantFocusability="blocksDescendants"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    android:background="@drawable/row_selector">
+    android:background="@drawable/row_selector" >
 
     <!--  ListRow Left side Thumbnail image -->
     <LinearLayout android:id="@+id/thumbnail"
@@ -45,7 +45,7 @@
         android:focusableInTouchMode="false"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/thumbnail"
-        android:background="@drawable/row_selector"/>
+        android:background="@drawable/row_selector" />
 
 </RelativeLayout>
 
