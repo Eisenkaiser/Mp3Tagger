@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="access_denied_message">Acceso denegado!</string>
+    <string name="action_settings">Ajustes</string>
+    <string name="album">Álbum</string>
+    <string name="artist">Artista</string>
+    <string name="browse">Navega</string>
+    <string name="cancel">Cancelar</string>
+    <string name="clear_selection">Borrar selección</string>
+    <string name="convert">De nombre a la etiqueta</string>
+    <string name="convert_description">Seleccione entre el nombre del archivo y haga clic en los botones de abajo para asignar la etiqueta deseada.</string>
+    <string name="converted">Antiguo</string>
+    <string name="cover">Cubra</string>
+    <string name="deselect_all">Anular selección</string>
+    <string name="edit">Editar</string>
+    <string name="empty">Vacío</string>
+    <string name="genre">Género</string>
+    <string name="invalid_value">Valor inválido!</string>
+    <string name="no_data">Sin datos</string>
+    <string name="path">Sendero</string>
+    <string name="preview">Vista previa</string>
+    <string name="read_warning">Muchos archivos han sido detectados. Este proceso puede tardar un tiempo.</string>
+    <string name="save">Guardar cambios</string>
+    <string name="saved">Guardado</string>
+    <string name="select_all">Seleccionar todo</string>
+    <string name="multiple_selected">Selección múltiple</string>
+    <string name="title">Título</string>
+    <string name="title_activity_convert">De nombre a la etiqueta</string>
+    <string name="title_activity_edit">Editar</string>
+    <string name="track">Pista</string>
+    <string name="unknown_artist">Artista desconocido</string>
+    <string name="unknown_title">Título desconocido</string>
+    <string name="warning">Advertencia</string>
+    <string name="year">Año</string>
+</resources>

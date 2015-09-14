@@ -135,7 +135,6 @@ public class ID3v1Genres {
 		"Terror",
 		"Indie",
 		"BritPop",
-		"Negerpunk",
 		"Polsk Punk",
 		"Beat",
 		"Christian Gangsta",

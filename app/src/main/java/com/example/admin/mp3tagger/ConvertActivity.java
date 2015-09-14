@@ -27,24 +27,21 @@ import java.util.List;
 
 public class ConvertActivity extends Activity {
 
-    List<Mp3File> files;
-
+    private boolean ONLY_SINGLE_CONVERSION = true;
+    private List<Mp3File> files;
     private Button track;
     private Button title;
     private Button album;
     private Button artist;
     private Button genre;
     private Button year;
-
     private TextView path;
-
     private String extractedTrack = "";
     private String extractedTitle = "";
     private String extractedAlbum = "";
     private String extractedArtist = "";
     private String extractedGenre = "";
     private String extractedYear = "";
-
     private Context curContext;
 
     @Override
@@ -298,6 +295,8 @@ public class ConvertActivity extends Activity {
             } else {
                 return;
             }
+
+            if (ONLY_SINGLE_CONVERSION) return;
         }
     }
 }

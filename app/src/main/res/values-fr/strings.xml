@@ -1,2 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="access_denied_message">Accès refusé!</string>
+    <string name="action_settings">Paramètres</string>
+    <string name="album">Album</string>
+    <string name="artist">Artiste</string>
+    <string name="browse">Parcourir</string>
+    <string name="cancel">Annuler</string>
+    <string name="clear_selection">Sélection vide</string>
+    <string name="convert">Du nom de l'étiquette</string>
+    <string name="convert_description">Choisissez parmi le nom du fichier et cliquez sur les boutons ci-dessous pour attribuer l'étiquette souhaitée.</string>
+    <string name="converted">Converti</string>
+    <string name="cover">couverture</string>
+    <string name="deselect_all">Tout déselectionner</string>
+    <string name="edit">Modifier</string>
+    <string name="empty">Vide</string>
+    <string name="genre">Genre</string>
+    <string name="invalid_value">Valeur invalide!</string>
+    <string name="no_data">Pas de données</string>
+    <string name="path">Chemin:</string>
+    <string name="preview">Aperçu</string>
+    <string name="read_warning">Beaucoup de fichiers ont été détectés. Ce processus peut prendre un certain temps.</string>
+    <string name="save">Sauvegarder</string>
+    <string name="saved">Sauvegardée</string>
+    <string name="select_all">Sélectionner tout</string>
+    <string name="multiple_selected">Sélection multiple</string>
+    <string name="title">Titre</string>
+    <string name="title_activity_convert">Du nom de l'étiquette</string>
+    <string name="title_activity_edit">Modifier</string>
+    <string name="track">Piste</string>
+    <string name="unknown_artist">Artist inconnu</string>
+    <string name="unknown_title">Titre inconnu</string>
+    <string name="warning">Attention</string>
+    <string name="year">An</string>
+</resources>

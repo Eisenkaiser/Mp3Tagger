@@ -4,7 +4,6 @@
     <string name="artist">Interpret</string>
     <string name="browse">Durchsuchen</string>
     <string name="cancel">Abbrechen</string>
-    <string name="composer">Komponist</string>
     <string name="cover">Cover</string>
     <string name="deselect_all">Auswahl aufheben</string>
     <string name="edit">Bearbeiten</string>
@@ -16,13 +15,12 @@
     <string name="title">Titel</string>
     <string name="track">Track</string>
     <string name="year">Jahr</string>
-    <string name="rating">Bewertung</string>
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_edit">Editieren</string>
-    <string name="title_activity_convert">Konvertieren</string>
+    <string name="title_activity_convert">Dateiname zu Tag</string>
     <string name="path">Pfad: </string>
     <string name="access_denied_message">Zugriff verweigert!</string>
-    <string name="several_selected">Mehrfache Auswahl</string>
+    <string name="multiple_selected">Mehrfachauswahl</string>
     <string name="preview">Vorschau</string>
     <string name="saved">Gespeichert</string>
     <string name="converted">Konvertiert</string>
@@ -30,4 +28,8 @@
     <string name="empty">Leer</string>
     <string name="clear_selection">Auswahl bereinigen</string>
     <string name="invalid_value">Ungültiger Wert!</string>
+    <string name="unknown_artist">Unbekannter Interpret</string>
+    <string name="unknown_title">Unbekannter Titel</string>
+    <string name="read_warning">Es wurden viele Dateien erkannt. Dieser Vorgang kann eine Weile dauern.</string>
+    <string name="warning">Warnung</string>
 </resources>

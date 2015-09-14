@@ -13,16 +13,14 @@
     <string name="album">Album</string>
     <string name="title">Title</string>
     <string name="genre">Genre</string>
-    <string name="composer">Composer</string>
     <string name="year">Year</string>
     <string name="track">Track</string>
     <string name="cover">Cover</string>
-    <string name="rating">Rating</string>
     <string name="title_activity_edit">Edit</string>
-    <string name="title_activity_convert">Convert</string>
+    <string name="title_activity_convert">Filename to Tag</string>
     <string name="convert_description">Select from the filename and click on the buttons below to assign the desired tag.</string>
     <string name="path">Path: </string>
-    <string name="several_selected">Several selected</string>
+    <string name="multiple_selected">Multiple Selection</string>
     <string name="access_denied_message">Access denied!</string>
     <string name="preview">Preview</string>
     <string name="saved">Saved</string>
@@ -30,4 +28,8 @@
     <string name="empty">Empty</string>
     <string name="clear_selection">Clear selection</string>
     <string name="invalid_value">Invalid value!</string>
+    <string name="unknown_title">Unknown Title</string>
+    <string name="unknown_artist">Unknown Artist</string>
+    <string name="warning">Warning</string>
+    <string name="read_warning">Many files have been detected. This process may take a while.</string>
 </resources>

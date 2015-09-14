@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -62,7 +61,7 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         initializeGenreSpinner();
         initializeEditTexts();
         InitializeButtons();
-        severalSelected = getResources().getString(R.string.several_selected);
+        severalSelected = getResources().getString(R.string.multiple_selected);
         LoadMp3List();
 
         try {
@@ -129,8 +128,12 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
 
             id3v2 = mp3File.getId3v2Tag();
 
-            if (!imgIsDifferent & !Arrays.equals(currentImage, id3v2.getAlbumImage())){
+            if (currentAlbum == null | id3v2.getAlbumImage() == null){
                 imgIsDifferent = true;
+            } else {
+                if (!imgIsDifferent & !Arrays.equals(currentImage, id3v2.getAlbumImage())){
+                    imgIsDifferent = true;
+                }
             }
 
             if (currentArtist == null & id3v2.getArtist() == null) {
