@@ -7,8 +7,8 @@
     <string name="browse">Parcourir</string>
     <string name="cancel">Annuler</string>
     <string name="clear_selection">Sélection vide</string>
-    <string name="convert">Du nom de l'étiquette</string>
-    <string name="convert_description">Choisissez parmi le nom du fichier et cliquez sur les boutons ci-dessous pour attribuer l'étiquette souhaitée.</string>
+    <string name="convert">Du nom de l\'étiquette</string>
+    <string name="convert_description">Choisissez parmi le nom du fichier et cliquez sur les boutons ci-dessous pour attribuer l\'étiquette souhaitée.</string>
     <string name="converted">Converti</string>
     <string name="cover">couverture</string>
     <string name="deselect_all">Tout déselectionner</string>
@@ -25,7 +25,7 @@
     <string name="select_all">Sélectionner tout</string>
     <string name="multiple_selected">Sélection multiple</string>
     <string name="title">Titre</string>
-    <string name="title_activity_convert">Du nom de l'étiquette</string>
+    <string name="title_activity_convert">Du nom de l\'étiquette</string>
     <string name="title_activity_edit">Modifier</string>
     <string name="track">Piste</string>
     <string name="unknown_artist">Artist inconnu</string>
