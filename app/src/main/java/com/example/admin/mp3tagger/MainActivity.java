@@ -23,14 +23,16 @@ import java.util.List;
 
 public class MainActivity extends ListActivity {
 
+    private final String ROOT_DIRECTORY = "/";
+    private ListAdapter listAdapter;
 
-    private final String ROOT = "/";
+    // current parent path
+    private String parentPath;
 
-    private ListAdapter adapter;
+    // buttons instances
     private Button edit;
     private Button select;
     private TextView path;
-    private String parentPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,29 +42,30 @@ public class MainActivity extends ListActivity {
 
         // label for displaying the current directory
         path = (TextView) findViewById(R.id.main_path_label);
-        // initializing custom adapter for list view
-        adapter = new ListAdapter(this, new ArrayList<ListItem>());
-
+        // initializing custom listAdapter for listView
+        listAdapter = new ListAdapter(this, new ArrayList<ListItem>());
+        // sets instances of the buttons
         initializeButtons();
 
-        // default setting
-        edit.setEnabled(false);
-        select.setEnabled(false);
-
         try {
-            // adds rows to the collection
-            getDir(ROOT);
-            // load the list view
-            setListAdapter(adapter);
+            // adds rows to the listView
+            getDir(ROOT_DIRECTORY);
+            // load the listView adapter
+            setListAdapter(listAdapter);
         } catch (IOException | UnsupportedTagException | InvalidDataException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * sets instances from buttons
+     */
     private void initializeButtons() {
+
         edit = (Button) findViewById(R.id.main_edit);
         edit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // starts new activity for editing id3-tags
                 startEditActivity(null);
             }
         });
@@ -71,22 +74,33 @@ public class MainActivity extends ListActivity {
         select.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 // changes the checkbox selection of all mp3-rows
-                adapter.toggleRows();
+                listAdapter.toggleRows();
                 // sets the text of the select button
-                select.setText(adapter.toggle ? R.string.deselect_all : R.string.select_all);
+                select.setText(listAdapter.toggle ? R.string.deselect_all : R.string.select_all);
             }
         });
+
+        // default setting
+        edit.setEnabled(false);
+        select.setEnabled(false);
     }
 
+    /**
+     * starts new edit activity
+     *
+     * @param file
+     */
     private void startEditActivity(File file) {
 
         List<String> mp3filePaths = new ArrayList<>();
 
+        // adds file to the path list in case of a single selection
         if (file != null) {
             mp3filePaths.add(file.getPath());
         }
 
-        for (ListAdapter.ViewHolder viewHolder : adapter.getListOfViewHolders()) {
+        // iterates the listAdapter for selected rows and adds them to the path list
+        for (ListAdapter.ViewHolder viewHolder : listAdapter.getListOfViewHolders()) {
             if (viewHolder.getPath().endsWith(".mp3")) {
                 if (viewHolder.getCheckState()) {
                     mp3filePaths.add(viewHolder.getPath());
@@ -94,70 +108,96 @@ public class MainActivity extends ListActivity {
             }
         }
 
+        // this is necessary to pass over values to the new activity
         Intent intent = new Intent(getBaseContext(), EditActivity.class);
         intent.putStringArrayListExtra("mp3filePaths", (ArrayList<String>) mp3filePaths);
         startActivity(intent);
     }
 
+    /**
+     * iterates through a given path and adds listItems to the listAdapter
+     *
+     * @param dirPath
+     * @throws IOException
+     * @throws InvalidDataException
+     * @throws UnsupportedTagException
+     */
     private void getDir(String dirPath) throws IOException, InvalidDataException, UnsupportedTagException {
 
-        if (adapter == null) return;
+        if (listAdapter == null) return;
 
+        // create file instance of the param path
         File f = new File(dirPath);
+        // get files from the path
         File[] files = f.listFiles();
+
+        // determines if the edit and select buttons are enabled true or false
         Boolean containsMP3 = false;
-        adapter.clearItems();
-        adapter.clearViewHolders();
+
+        // clears the listAdapter
+        listAdapter.clearItems();
+        listAdapter.clearViewHolders();
+
+        // sets the TextView for the current directory
         path.setText("path: " + dirPath);
 
-        if (!dirPath.equals(ROOT)) {
-            adapter.addItem(new ListItem(ROOT, ROOT));
-            adapter.addItem(new ListItem(f.getParent(), "../"));
+        // adds the first two elements to the listAdapter for navigating
+        if (!dirPath.equals(ROOT_DIRECTORY)) {
+            listAdapter.addItem(new ListItem(ROOT_DIRECTORY, ROOT_DIRECTORY));
+            listAdapter.addItem(new ListItem(f.getParent(), "../"));
         } else {
-            parentPath = ROOT;
+            parentPath = ROOT_DIRECTORY;
         }
 
+        // iterates the path and adds mp3 items to the listAdapter
         for (File file : files) {
-
-//            if (!file.canWrite()) {
-//                continue;
-//            }
 
             ListItem item = new ListItem(file.getPath(), file.getName());
             item.setPath(file.getPath());
             item.setName(file.getName());
 
-            if (!file.isDirectory()) {
-                if (file.getName().endsWith(".mp3")) {
+            if (!file.isDirectory() && file.getName().endsWith(".mp3")) {
+                // sets current path
+                parentPath = file.getParent();
 
-                    parentPath = file.getParent();
+                Mp3File mp3File = new Mp3File(file);
+                ID3v2 id3v2;
 
-                    Mp3File mp3File = new Mp3File(file);
-                    ID3v2 id3v2;
-                    if (mp3File.hasId3v2Tag()) {
-                        id3v2 = mp3File.getId3v2Tag();
-                        item.setArtist((id3v2.getArtist() == null) ? getResources().getString(R.string.unknown_artist) : id3v2.getArtist());
-                        item.setSongtitle((id3v2.getTitle() == null) ? getResources().getString(R.string.unknown_title) : id3v2.getTitle());
-                    } else {
-                        id3v2 = new ID3v24Tag();
-                        mp3File.setId3v2Tag(id3v2);
-                        id3v2 = mp3File.getId3v2Tag();
-                        id3v2.setArtist("");
-                        id3v2.setTitle("");
-                        item.setArtist(getResources().getString(R.string.unknown_artist));
-                        item.setSongtitle(getResources().getString(R.string.unknown_title));
-                    }
+                if (mp3File.hasId3v2Tag()) {
 
-                    containsMP3 = true;
+                    id3v2 = mp3File.getId3v2Tag();
+
+                    // if (null) unknown artist as display text in the item, else the usual artist or title from the id3-tag
+                    item.setArtist((id3v2.getArtist() == null) ? getResources().getString(R.string.unknown_artist) : id3v2.getArtist());
+                    item.setSongtitle((id3v2.getTitle() == null) ? getResources().getString(R.string.unknown_title) : id3v2.getTitle());
+
                 } else {
-                    continue;
+
+                    // creates new id3-tag
+                    id3v2 = new ID3v24Tag();
+                    mp3File.setId3v2Tag(id3v2);
+                    id3v2 = mp3File.getId3v2Tag();
+
+                    // default value empty string instead of null
+                    id3v2.setArtist("");
+                    id3v2.setTitle("");
+
+                    // sets items display as unknown artist/title
+                    item.setArtist(getResources().getString(R.string.unknown_artist));
+                    item.setSongtitle(getResources().getString(R.string.unknown_title));
+
                 }
+
+                containsMP3 = true;
             }
 
-            adapter.addItem(item);
+            // add item to listAdapter
+            listAdapter.addItem(item);
         }
 
-        adapter.notifyDataSetChanged();
+        // necessary to update view
+        listAdapter.notifyDataSetChanged();
+
         ToggleButtons(containsMP3);
     }
 
@@ -166,7 +206,7 @@ public class MainActivity extends ListActivity {
 
         super.onResume();
 
-        if (adapter == null | parentPath == null) return;
+        if (listAdapter == null | parentPath == null) return;
 
         try {
             getDir(parentPath);
@@ -184,7 +224,8 @@ public class MainActivity extends ListActivity {
 
         this.select.setEnabled(containsMP3);
 
-        for (ListAdapter.ViewHolder viewHolder : adapter.getListOfViewHolders()) {
+        // sets the checkboxes
+        for (ListAdapter.ViewHolder viewHolder : listAdapter.getListOfViewHolders()) {
             if (viewHolder.getPath().endsWith(".mp3")) {
                 this.edit.setEnabled(viewHolder.getCheckState());
             }
@@ -195,9 +236,15 @@ public class MainActivity extends ListActivity {
         return this.edit;
     }
 
-    public boolean hasCertainFiles(String[] filenames, String extension){
+    /**
+     * checks if list contains filenames with a specific extension
+     * @param filenames
+     * @param extension
+     * @return
+     */
+    public boolean hasCertainFiles(String[] filenames, String extension) {
 
-        for (String filename : filenames){
+        for (String filename : filenames) {
             if (filename.endsWith(extension)) return true;
         }
 
@@ -208,11 +255,15 @@ public class MainActivity extends ListActivity {
     protected void onListItemClick(ListView l, View v, final int position, long id) {
 
         // creates File object from the chosen path
-        File file = new File(adapter.getItem(position).getPath());
+        File file = new File(listAdapter.getItem(position).getPath());
 
         if (file.isDirectory()) {
+
             if (file.canRead()) {
-                if (file.list().length > 50 & hasCertainFiles(file.list(),".mp3")) {
+
+                if (file.list().length > 50 & hasCertainFiles(file.list(), ".mp3")) {
+
+                    // alert dialog if path contains a lot of mp3s
                     final AlertDialog.Builder myAlertDialog = new AlertDialog.Builder(this);
                     myAlertDialog.setTitle(R.string.warning);
                     myAlertDialog.setMessage(R.string.read_warning);
@@ -221,7 +272,7 @@ public class MainActivity extends ListActivity {
                         public void onClick(DialogInterface arg0, int arg1) {
                             // loads the ListView from the chosen path
                             try {
-                                getDir(adapter.getItem(position).getPath());
+                                getDir(listAdapter.getItem(position).getPath());
                             } catch (IOException | InvalidDataException | UnsupportedTagException e) {
                                 e.printStackTrace();
                             }
@@ -239,7 +290,7 @@ public class MainActivity extends ListActivity {
                 } else {
                     // loads the ListView from the chosen path
                     try {
-                        getDir(adapter.getItem(position).getPath());
+                        getDir(listAdapter.getItem(position).getPath());
                     } catch (IOException | InvalidDataException | UnsupportedTagException e) {
                         e.printStackTrace();
                     }
