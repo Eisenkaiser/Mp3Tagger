@@ -27,8 +27,12 @@ import java.util.List;
 
 public class ConvertActivity extends Activity {
 
-    private boolean ONLY_SINGLE_CONVERSION = true;
+    // momentarly prevents the conversion of multiple files due to difficulties with the concept
+    private final boolean ONLY_SINGLE_CONVERSION = true;
+    
     private List<Mp3File> files;
+    
+    // button instances
     private Button track;
     private Button title;
     private Button album;
@@ -36,12 +40,15 @@ public class ConvertActivity extends Activity {
     private Button genre;
     private Button year;
     private TextView path;
+    
+    // variables for new tags
     private String extractedTrack = "";
     private String extractedTitle = "";
     private String extractedAlbum = "";
     private String extractedArtist = "";
     private String extractedGenre = "";
     private String extractedYear = "";
+    
     private Context curContext;
 
     @Override
@@ -56,6 +63,7 @@ public class ConvertActivity extends Activity {
 
         // sets the first path as a template
         path = (TextView) this.findViewById(R.id.convert_path);
+        // initializes path textview with the first mp3-file title from the list 
         path.setText((new File(extras.getStringArrayList("mp3filePaths").get(0)).getName()).split(".mp3")[0]);
         path.setTextIsSelectable(true);
         initializeButtons();
@@ -63,9 +71,11 @@ public class ConvertActivity extends Activity {
 
     @Nullable
     private Bundle LoadMp3List() {
+       
         files = new ArrayList<>();
         Bundle extras = getIntent().getExtras();
 
+        // get the mp3 filepaths from the previous activity
         if (extras != null) {
             for (String path : extras.getStringArrayList("mp3filePaths")) {
                 try {
@@ -80,24 +90,30 @@ public class ConvertActivity extends Activity {
     }
 
     private void initializeButtons() {
+       
         track = (Button) findViewById(R.id.convert_track);
         track.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedTrack = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedTrack.length() == 0) {
+                    // sets buttons text to default
                     track.setText(getResources().getString(R.string.track));
                 } else {
+                    // check if text is numeric
                     if (extractedTrack.matches("^-?\\d+$")) {
                         track.setText(extractedTrack);
                     } else {
+                        // alert dialog for invalid value
                         new AlertDialog.Builder(curContext)
                                 .setTitle(R.string.invalid_value)
                                 .setPositiveButton("OK",
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                 // sets buttons text to default
                                                 track.setText(getResources().getString(R.string.track));
                                             }
                                         }).show();
@@ -111,11 +127,13 @@ public class ConvertActivity extends Activity {
         title.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedTitle = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedTitle.length() > 0) {
                     title.setText(extractedTitle);
                 } else {
+                    // sets button text to default
                     title.setText(getResources().getString(R.string.title));
                 }
 
@@ -126,11 +144,13 @@ public class ConvertActivity extends Activity {
         album.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedAlbum = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedAlbum.length() > 0) {
                     album.setText(extractedAlbum);
                 } else {
+                    // sets button text to default
                     album.setText(getResources().getString(R.string.album));
                 }
 
@@ -141,11 +161,13 @@ public class ConvertActivity extends Activity {
         artist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedArtist = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedArtist.length() > 0) {
                     artist.setText(extractedArtist);
                 } else {
+                    // sets button text to default
                     artist.setText(getResources().getString(R.string.artist));
                 }
 
@@ -156,11 +178,14 @@ public class ConvertActivity extends Activity {
         year.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedYear = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedYear.length() == 0) {
+                    // sets button text tp default
                     year.setText(getResources().getString(R.string.year));
                 } else {
+                    // check if text is numeric
                     if (extractedYear.matches("^-?\\d+$")) {
                         year.setText(extractedYear);
                     } else {
@@ -170,6 +195,7 @@ public class ConvertActivity extends Activity {
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                // sets button text tp default
                                                 year.setText(getResources().getString(R.string.year));
                                             }
                                         }).show();
@@ -183,9 +209,11 @@ public class ConvertActivity extends Activity {
         genre.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
+                // initializes variable with the currently selected text from the path textview
                 extractedGenre = (path.getText().toString().substring(path.getSelectionStart(), path.getSelectionEnd())).trim();
 
                 if (extractedGenre.length() == 0) {
+                    // sets button text tp default
                     genre.setText(getResources().getString(R.string.genre));
                 } else {
                     if (ID3v1Genres.matchGenreDescription(extractedGenre) != -1) {
@@ -197,6 +225,7 @@ public class ConvertActivity extends Activity {
                                         new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
+                                                // sets button text to default
                                                 genre.setText(getResources().getString(R.string.genre));
                                             }
                                         }).show();
@@ -209,6 +238,7 @@ public class ConvertActivity extends Activity {
         Button cancel = (Button) findViewById(R.id.convert_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                // close activity
                 finish();
             }
         });
@@ -217,12 +247,13 @@ public class ConvertActivity extends Activity {
         convert.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 try {
-                    ConvertFilenameToTags();
+                    saveExtractedTags();
                     finish();
                 } catch (IOException | NotSupportedException e) {
                     e.printStackTrace();
                 }
-
+                
+                // toast for 'converted'
                 Toast.makeText(getApplicationContext(), R.string.converted, Toast.LENGTH_LONG).show();
             }
         });
@@ -235,22 +266,31 @@ public class ConvertActivity extends Activity {
         });
     }
 
+    /**
+    * sets variables amd button texts to default
+    **/
     private void clearSelection() {
+      
         extractedAlbum = "";
         extractedTitle = "";
         extractedArtist = "";
         extractedTrack = "";
         extractedYear = "";
         extractedGenre = "";
+        
         album.setText(getResources().getString(R.string.album));
         title.setText(getResources().getString(R.string.title));
         artist.setText(getResources().getString(R.string.artist));
         track.setText(getResources().getString(R.string.track));
         genre.setText(getResources().getString(R.string.genre));
         year.setText(getResources().getString(R.string.year));
+        
     }
-
-    private void ConvertFilenameToTags() throws IOException, NotSupportedException {
+     
+    /**
+    * iterates through the files list and saves the extracted tags 
+    **/
+    private void saveExtractedTags() throws IOException, NotSupportedException {
 
         ID3v2 id3v2;
         boolean isChanged = false;
@@ -290,8 +330,8 @@ public class ConvertActivity extends Activity {
             }
 
             if (isChanged) {
+                // overwrite
                 mp3File.save(mp3File.getFilename());
-                //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(mp3File.getFilename())));
             } else {
                 return;
             }
