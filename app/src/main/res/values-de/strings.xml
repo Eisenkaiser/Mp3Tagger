@@ -24,7 +24,7 @@
     <string name="preview">Vorschau</string>
     <string name="saved">Gespeichert</string>
     <string name="converted">Konvertiert</string>
-    <string name="convert_description">Wähle aus dem Dateinamen und tippe auf die unteren Buttons um den gewünschten Tag zuzuweisen.</string>
+    <string name="convert_description">Wähle aus dem oberen Dateinamen und tippe auf die unteren Buttons um den gewünschten Tag zuzuweisen.</string>
     <string name="empty">Leer</string>
     <string name="clear_selection">Auswahl bereinigen</string>
     <string name="invalid_value">Ungültiger Wert!</string>
