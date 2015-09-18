@@ -36,21 +36,31 @@ import java.util.List;
 
 public class EditActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
-    private String severalSelected;
+    // string for R.string.multiple_selected
+    private String multipleSelected;
+    
     private List<Mp3File> files;
+    
+    private ArrayAdapter<String> genreAdapter;
+    
+    // index of the selected genre
+    private  int currentGenrePosition;
+    
+    private boolean isConverted = false;
+    private boolean genreIsChanged = false;
+    
+    // gui instances
     private EditText artist;
     private EditText album;
     private EditText title;
     private EditText track;
     private EditText year;
-    private Bundle extras;
+    private TextView genreText;
     private ImageButton imageButton;
     private Spinner spinner;
-    private ArrayAdapter<String> genreAdapter;
-    private  TextView genreText;
-    private  int currentGenrePosition;
-    private boolean isConverted = false;
-    private boolean genreIsChanged = false;
+    
+    // variable to hold data from the previous activity
+    private Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,13 +68,17 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit);
 
+        // initialize the gui
         initializeGenreSpinner();
         initializeEditTexts();
         InitializeButtons();
-        severalSelected = getResources().getString(R.string.multiple_selected);
+        multipleSelected = getResources().getString(R.string.multiple_selected);
+        
+        // converts path list to a list of mp3s
         LoadMp3List();
 
         try {
+            // loads tags into the gui
             LoadData(this.files);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -72,12 +86,17 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void initializeGenreSpinner() {
+        // instanciate the spinner
         spinner = (Spinner) findViewById(R.id.edit_spinner);
+        // load genre from the static string array
         List<String> genreList = Arrays.asList(ID3v1Genres.GENRES);
+        // sorts the genres alphabetically
         Collections.sort(genreList, String.CASE_INSENSITIVE_ORDER);
+        // initialize spinner adapter
         genreAdapter = new ArrayAdapter<>(this,R.layout.edit_genre_item, genreList);
         genreAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(genreAdapter);
+        // set listener
         spinner.setOnItemSelectedListener(this);
     }
 
@@ -92,8 +111,10 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
     private void LoadMp3List() {
 
         files = new ArrayList<>();
+        // get values from previous activity
         extras = getIntent().getExtras();
 
+        // initialize list of mp3s from the path list
         if (extras != null) {
             for (String path : extras.getStringArrayList("mp3filePaths")) {
                 try {
@@ -108,22 +129,28 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
     private void LoadData(List<Mp3File> mp3FileList) throws UnsupportedEncodingException {
 
         if (mp3FileList == null | mp3FileList.size() == 0) return;
-
+        
+        // the first mp3 in the list serves as a template
         ID3v2 id3v2 = mp3FileList.get(0).getId3v2Tag();
 
+        // initialize the 'template'
         byte[] currentImage = id3v2.getAlbumImage();
         String currentArtist = id3v2.getArtist();
         String currentAlbum = id3v2.getAlbum();
         String currentTitle = id3v2.getTitle();
         String currentTrack = id3v2.getTrack();
-        String genreTextIfSeveralSelected = id3v2.getGenreDescription();
-        int currentGenre = id3v2.getGenre();
         String currentYear = id3v2.getYear();
-
+        int currentGenre = id3v2.getGenre();
+        
+        // hints no possible in spinner, so we use the textview for it
+        String genreTextIfMultipleSelected = id3v2.getGenreDescription();
+        
+        // if true -> loads default image from resources
         boolean imgIsDifferent = false;
 
         genreText = (TextView) findViewById(R.id.text_Genre);
 
+        // check where following tags do not match and change the hint etc.
         for (Mp3File mp3File : mp3FileList) {
 
             id3v2 = mp3File.getId3v2Tag();
@@ -140,10 +167,10 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
                 artist.setHint(R.string.empty);
                 currentArtist = "";
             } else if (currentArtist != null ^ id3v2.getArtist() != null) {
-                artist.setHint(severalSelected);
+                artist.setHint(multipleSelected);
                 currentArtist = "";
             } else if (!currentArtist.equals(id3v2.getArtist())) {
-                artist.setHint(severalSelected);
+                artist.setHint(multipleSelected);
                 currentArtist = "";
             } else {
                 artist.setHint("");
@@ -153,10 +180,10 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
                 album.setHint(R.string.empty);
                 currentAlbum = "";
             } else if (currentAlbum != null ^ id3v2.getAlbum() != null) {
-                album.setHint(severalSelected);
+                album.setHint(multipleSelected);
                 currentAlbum = "";
             } else if (!currentAlbum.equals(id3v2.getAlbum())) {
-                album.setHint(severalSelected);
+                album.setHint(multipleSelected);
                 currentAlbum = "";
             } else {
                 album.setHint("");
@@ -166,10 +193,10 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
                 title.setHint(R.string.empty);
                 currentTitle = "";
             } else if (currentTitle != null ^ id3v2.getTitle() != null) {
-                title.setHint(severalSelected);
+                title.setHint(multipleSelected);
                 currentTitle = "";
             } else if (!currentTitle.equals(id3v2.getTitle())) {
-                title.setHint(severalSelected);
+                title.setHint(multipleSelected);
                 currentTitle = "";
             } else {
                 title.setHint("");
@@ -179,34 +206,35 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
                 track.setHint(R.string.empty);
                 currentTrack = "";
             } else if (currentTrack != null ^ id3v2.getTrack() != null) {
-                track.setHint(severalSelected);
+                track.setHint(multipleSelected);
                 currentTrack = "";
             } else if (!currentTrack.equals(id3v2.getTrack())) {
-                track.setHint(severalSelected);
+                track.setHint(multipleSelected);
                 currentTrack = "";
             } else {
                 track.setHint("");
             }
 
-
-            if (genreTextIfSeveralSelected == null & id3v2.getGenreDescription() == null) {
-                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + getResources().getString(R.string.empty);
-            } else if (genreTextIfSeveralSelected != null ^ id3v2.getGenreDescription() != null) {
-                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + severalSelected;
-            } else if (!genreTextIfSeveralSelected.equals(id3v2.getGenreDescription())) {
-                genreTextIfSeveralSelected = getResources().getString(R.string.genre) + " - " + severalSelected;
+            // set the genre textview - checks for null included
+            if (genreTextIfMultipleSelected == null & id3v2.getGenreDescription() == null) {
+                genreTextIfMultipleSelected = getResources().getString(R.string.genre) + " - " + getResources().getString(R.string.empty);
+            } else if (genreTextIfMultipleSelected != null ^ id3v2.getGenreDescription() != null) {
+                genreTextIfMultipleSelected = getResources().getString(R.string.genre) + " - " + multipleSelected;
+            } else if (!genreTextIfMultipleSelected.equals(id3v2.getGenreDescription())) {
+                genreTextIfMultipleSelected = getResources().getString(R.string.genre) + " - " + multipleSelected;
             } else {
-                genreTextIfSeveralSelected = getResources().getString(R.string.genre);
+                genreTextIfMultipleSelected = getResources().getString(R.string.genre);
             }
 
+            // sets the year textview - checks for null included
             if (currentYear == null & id3v2.getYear() == null) {
                 year.setHint(R.string.empty);
                 currentYear = "";
             } else if (currentYear != null ^ id3v2.getYear() != null) {
-                year.setHint(severalSelected);
+                year.setHint(multipleSelected);
                 currentYear = "";
             } else if (!currentYear.equals(id3v2.getYear())) {
-                year.setHint(severalSelected);
+                year.setHint(multipleSelected);
                 currentYear = "";
             } else {
                 year.setHint("");
@@ -217,15 +245,17 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         album.setText(currentAlbum);
         title.setText(currentTitle);
         track.setText(currentTrack);
-        genreText.setText(genreTextIfSeveralSelected);
+        genreText.setText(genreTextIfMultipleSelected);
         spinner.setSelection(currentGenre);
         year.setText(currentYear);
 
         Bitmap bmp;
 
         if (imgIsDifferent) {
+            // load default image aka placeholder image
             bmp = BitmapFactory.decodeByteArray(fillImageWithPlaceHolder(), 0, fillImageWithPlaceHolder().length);
         }else {
+            // load image from tags
             bmp = BitmapFactory.decodeByteArray(currentImage, 0, currentImage.length);
         }
 
@@ -233,7 +263,9 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private byte[] fillImageWithPlaceHolder() {
+        // load image from resources
         Drawable d = ContextCompat.getDrawable(this, R.drawable.img_placeholder);
+        // conversion
         Bitmap bitmap = ((BitmapDrawable)d).getBitmap();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -247,18 +279,19 @@ public class EditActivity extends Activity implements AdapterView.OnItemSelected
         for (Mp3File mp3File : mp3FileList) {
 
             id3v2 = mp3File.getId3v2Tag();
-
-            id3v2.setArtist((artist.getHint().toString().equals(severalSelected) ? id3v2.getArtist() : artist.getText().toString()));
-            id3v2.setAlbum((album.getHint().toString().equals(severalSelected) ? id3v2.getAlbum() : album.getText().toString()));
-            id3v2.setTitle((title.getHint().toString().equals(severalSelected) ? id3v2.getTitle() : title.getText().toString()));
-            id3v2.setTrack((track.getHint().toString().equals(severalSelected) ? id3v2.getTrack() : track.getText().toString()));
+            
+            // sets tags
+            id3v2.setArtist((artist.getHint().toString().equals(multipleSelected) ? id3v2.getArtist() : artist.getText().toString()));
+            id3v2.setAlbum((album.getHint().toString().equals(multipleSelected) ? id3v2.getAlbum() : album.getText().toString()));
+            id3v2.setTitle((title.getHint().toString().equals(multipleSelected) ? id3v2.getTitle() : title.getText().toString()));
+            id3v2.setTrack((track.getHint().toString().equals(multipleSelected) ? id3v2.getTrack() : track.getText().toString()));
             id3v2.setGenreDescription((!genreText.getText().toString().equals(getResources().getString(R.string.genre)) & !genreIsChanged) ? id3v2.getGenreDescription() : genreAdapter.getItem(currentGenrePosition));
-            id3v2.setYear((year.getHint().toString().equals(severalSelected) ? id3v2.getYear() : year.getText().toString()));
+            id3v2.setYear((year.getHint().toString().equals(multipleSelected) ? id3v2.getYear() : year.getText().toString()));
 
             mp3File.save(mp3File.getFilename());
-            //sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse(mp3File.getFilename())));
         }
 
+        // close activity
         this.finish();
     }
 
