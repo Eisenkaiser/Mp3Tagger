@@ -123,6 +123,7 @@ public class ListAdapter extends ArrayAdapter<ListItem> implements CompoundButto
         this.notifyDataSetChanged();
     }
 
+    // viewholder pattern to store the loaded data
     public static class ViewHolder {
 
         private CheckBox checkBox;
